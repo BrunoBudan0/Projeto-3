@@ -31,17 +31,17 @@ void criarMoedas(cripto criptos[]) {
     criptos[0].taxaC = 1.02;
 
 
-    strcpy(criptos[0].nome, "Ethereum");
-    criptos[0].moeda = 2;
-    criptos[0].cota = 400;
-    criptos[0].taxaV = 0.98;
-    criptos[0].taxaC = 1.01;
+    strcpy(criptos[1].nome, "Ethereum");
+    criptos[1].moeda = 2;
+    criptos[1].cota = 400;
+    criptos[1].taxaV = 0.98;
+    criptos[1].taxaC = 1.01;
 
-    strcpy(criptos[0].nome, "Ripple");
-    criptos[0].moeda = 1;
-    criptos[0].cota = 3500;
-    criptos[0].taxaV = 0.99;
-    criptos[0].taxaC = 1.01;
+    strcpy(criptos[2].nome, "Ripple");
+    criptos[2].moeda = 1;
+    criptos[2].cota = 3500;
+    criptos[2].taxaV = 0.99;
+    criptos[2].taxaC = 1.01;
 }
 
 // atualização projeto 3

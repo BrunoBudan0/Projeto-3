@@ -56,6 +56,8 @@ typedef struct {
     char nome_arquivo[12];
 } Usuario;
 
+void criarMoedas(cripto criptos[]); 
+
 int ler_arquivo(char nome_arquivo[],float *bit,float *eth, float *rip, float *real, double *cot_bit, double *cot_eth,double *cot_rip, char extrato[][LEN], int *num_strings);
 
 int salvar_arquivo(char nome_arquivo[],float *bit,float *eth, float *rip, float *real, double *cot_bit, double *cot_eth,double *cot_rip, char extrato[][LEN], int *num_strings);

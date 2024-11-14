@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
-#include "funcoes1.h" 
+#include "funcoes.h" 
 
 
 float bit;
@@ -33,7 +33,7 @@ void criarMoedas(cripto criptos[]) {
 
     strcpy(criptos[1].nome, "Ethereum");
     criptos[1].moeda = 2;
-    criptos[1].cota = 400;
+    criptos[1].cota = 4000;
     criptos[1].taxaV = 0.98;
     criptos[1].taxaC = 1.01;
 
@@ -240,14 +240,14 @@ int extrato_fun(int *num_strings,char tipo, float valor, char *moeda, double cot
 
 
 
-void consultar_saldo(char nome[], char cpf[]){
+void consultar_saldo(char nome[], char cpf[], cripto criptos[]){
     char cpf_formatado[15];  
     formatar_cpf(cpf, cpf_formatado);
 
     printf("Saldo de %s (CPF: %s):\n", nome, cpf_formatado); 
-    printf("Bitcoin: %.2f\n", bit);
-    printf("Ethereum: %.2f\n", eth);
-    printf("Ripple: %.2f\n", rip);
+    printf("Bitcoin: %.2f\n", criptos[0].moeda);
+    printf("Ethereum: %.2f\n", criptos[1].moeda);
+    printf("Ripple: %.2f\n", criptos[2].moeda);
     printf("Reais: %.2f\n", real);
     system("pause");
 }
@@ -272,7 +272,7 @@ int consultar_extrato(int num_strings, int senha, char nome[], char cpf[]){
     return 0;
 }
 
-int depositar(float *real, int *num_strings, float *bit, float *eth, float *rip) {
+int depositar(float *real, int *num_strings, cripto criptos[]) {
 
     printf("Digite a quantidade a ser depositada(R$):");
     float valor;
@@ -286,7 +286,7 @@ int depositar(float *real, int *num_strings, float *bit, float *eth, float *rip)
         int cota = 0.0;
         float tx = 0.0;
         puts("Transacao realizada com sucesso!");
-        extrato_fun(num_strings, tipo,valor,moeda,cota,tx, real, bit, eth, rip);
+        extrato_fun(num_strings, tipo,valor,moeda,cota,tx, real, &criptos[0].moeda, &criptos[1].moeda, &criptos[2].moeda);
 
     } else {
         puts("Houve um erro! Digite um valor valido...");
@@ -296,7 +296,7 @@ int depositar(float *real, int *num_strings, float *bit, float *eth, float *rip)
     return 0;
 }
 
-int sacar(int senha, float *real, int *num_strings, float *bit, float *eth, float *rip){
+int sacar(int senha, float *real, int *num_strings, cripto criptos[] ){
     printf("Digite sua senha: ");
     int senh;
     scanf("%d", &senh);
@@ -314,7 +314,7 @@ int sacar(int senha, float *real, int *num_strings, float *bit, float *eth, floa
             char moeda[5] = "REAL";
             int cota = 0.0;
             float tx = 0.0;
-            extrato_fun(num_strings, tipo,valor,moeda,cota,tx, real, bit, eth, rip);
+            extrato_fun(num_strings, tipo,valor,moeda,cota,tx, real, &criptos[0].moeda, &criptos[1].moeda, &criptos[2].moeda);
 
         } else {
             puts("Houve um erro!!!");
@@ -406,7 +406,7 @@ int comprar_cripto(int senha, int *num_strings, float *real, cripto criptos[]) {
         }
 }
 
-int vender_cripto(int senha, int *num_strings ,float *real, float *bit, float *eth, float *rip, double *cot_bit, double *cot_eth, double *cot_rip){
+int vender_cripto(int senha, int *num_strings ,float *real, cripto criptos[]){
     printf("Digite sua senha: ");
     int senh;
     scanf("%d", &senh);
@@ -424,17 +424,17 @@ int vender_cripto(int senha, int *num_strings ,float *real, float *bit, float *e
                 float valor;
                 scanf("%f", &valor);
                 if (esc == 1){
-                    float veri = *bit; // copia do bit (valor para verificação)
+                    float veri = criptos[0].moeda; // copia do bit (valor para verificação)
                     if (valor > 0 && (veri - valor) >=0) {
-                        *real += (valor * *cot_bit * 0.97);
-                        *bit -= valor; 
-                        printf("Saldo Bitcoin: %.2f\n", *bit);
+                        *real += (valor * criptos[0].cota * criptos[0].taxaV);
+                        criptos[0].moeda -= valor; 
+                        printf("Saldo Bitcoin: %.2f\n", criptos[0].moeda);
                         puts("Transacao realizada com sucesso!");
                         char tipo = '-';
                         char moeda[5] = "BTC";
-                        double cota = *cot_bit;
+                        double cota = criptos[0].cota;
                         float tx = 0.03;
-                        extrato_fun(num_strings, tipo,valor,moeda,*cot_bit,tx, real, bit, eth, rip);
+                        extrato_fun(num_strings, tipo,valor,moeda, criptos[0].cota,tx, real, &criptos[0].moeda, &criptos[1].moeda, &criptos[2].moeda);
                     } else {
                         puts("Houve um erro!!!");
                     }
@@ -442,18 +442,18 @@ int vender_cripto(int senha, int *num_strings ,float *real, float *bit, float *e
                     return 0;
                 }
                 else if (esc == 2) {
-                    float veri = *eth; // copia do eth (valor para verificação)
+                    float veri = criptos[1].moeda; // copia do eth (valor para verificação)
                     if (valor > 0 && (veri - valor) >=0) {
-                    *real += (valor * *cot_eth * 0.98);
-                    *eth -= valor; 
-                    printf("Saldo Ethereum: %.2f\n", *eth);
+                    *real += (valor * criptos[1].cota * criptos[1].taxaV);
+                    criptos[1].moeda -= valor; 
+                    printf("Saldo Ethereum: %.2f\n", criptos[1].moeda);
                     puts("Transacao realizada com sucesso!");
 
                     char tipo = '-';
                     char moeda[5] = "ETH";
-                    double cota = *cot_eth;
+                    double cota = criptos[1].cota;
                     float tx = 0.02;
-                    extrato_fun(num_strings, tipo,valor,moeda,*cot_eth,tx, real, bit, eth, rip);
+                    extrato_fun(num_strings, tipo,valor,moeda,criptos[1].cota,tx, real, &criptos[0].moeda, &criptos[1].moeda, &criptos[2].moeda);
                     } else {
                         puts("Houve um erro!!!");
                     }
@@ -461,17 +461,17 @@ int vender_cripto(int senha, int *num_strings ,float *real, float *bit, float *e
                     return 0;
                 }
                 else{
-                    float veri = *rip; // copia do real (valor para verificação)
+                    float veri = criptos[2].moeda; // copia do real (valor para verificação)
                     if (valor > 0 && (veri - valor) >=0) {
-                        *real += (valor * *cot_rip * 0.99);
-                        *rip -= valor;  
-                        printf("Saldo Ripple: %.2f\n", *rip);
+                        *real += (valor * criptos[2].cota * criptos[2].taxaV);
+                        criptos[2].moeda -= valor;  
+                        printf("Saldo Ripple: %.2f\n", criptos[2].moeda);
                         puts("Transacao realizada com sucesso!");
                         char tipo = '-';
                         char moeda[5] = "RIP";
-                        double cota = *cot_rip;
+                        double cota = criptos[2].cota;
                         float tx = 0.01;
-                        extrato_fun(num_strings, tipo,valor,moeda,*cot_rip,tx, real, bit, eth, rip);
+                        extrato_fun(num_strings, tipo,valor,moeda,criptos[2].cota,tx, real, &criptos[0].moeda, &criptos[1].moeda, &criptos[2].moeda);
 
                     } else{
                         puts("Houve um erro!!!");
@@ -487,35 +487,35 @@ int vender_cripto(int senha, int *num_strings ,float *real, float *bit, float *e
         }
 }
 
-int atualizar_cot(double *cot_bit, double *cot_eth, double *cot_rip){
+int atualizar_cot(cripto criptos[]){
 
 
     srand(time(NULL));
 
-    double cincobtc = *cot_bit * 0.05;
-    double cincoeth = *cot_eth * 0.05;
-    double cincorip = *cot_rip * 0.05;
+    double cincobtc = criptos[0].cota * 0.05;
+    double cincoeth = criptos[0].cota * 0.05;
+    double cincorip = criptos[0].cota * 0.05;
 
-    double limiteinfbtc = *cot_bit - cincobtc;
-    double limitesupbtc = *cot_bit + cincobtc;
+    double limiteinfbtc = criptos[0].cota - cincobtc;
+    double limitesupbtc = criptos[0].cota + cincobtc;
 
-    double limiteinfeth = *cot_eth - cincoeth;
-    double limitesupeth = *cot_eth + cincoeth;
+    double limiteinfeth = criptos[1].cota - cincoeth;
+    double limitesupeth = criptos[1].cota + cincoeth;
 
-    double limiteinfrip = *cot_rip - cincorip;
-    double limitesuprip = *cot_rip + cincorip;
+    double limiteinfrip = criptos[2].cota - cincorip;
+    double limitesuprip = criptos[2].cota + cincorip;
 
     double numAleatorioBTC = limitesupbtc - (rand()/(double)RAND_MAX)* (limitesupbtc - limiteinfbtc);
     printf("Cotacao Bitcoin: %.2f\n", numAleatorioBTC);
-    *cot_bit = numAleatorioBTC;
+    criptos[0].cota = numAleatorioBTC;
 
     double numAleatorioETH = limitesupeth - (rand()/(double)RAND_MAX)* (limitesupeth - limiteinfeth);
     printf("Cotacao Ethereum: %.2f\n", numAleatorioETH);
-    *cot_eth = numAleatorioETH;
+    criptos[1].cota = numAleatorioETH;
 
     double numAleatorioRIP = limitesuprip - (rand()/(double)RAND_MAX)* (limitesuprip - limiteinfrip);
     printf("Cotacao Ripple:%.2f\n", numAleatorioRIP);
-    *cot_rip = numAleatorioRIP;
+    criptos[2].cota = numAleatorioRIP;
 
 
 }

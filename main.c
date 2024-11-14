@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "funcoes1.h"
+#include "funcoes.h"
 
 int main(void) {
     char cpf[12];
@@ -47,14 +47,14 @@ int main(void) {
                 if (esc < 1 || esc > 8) {
                     printf("Escolha uma opcao valida!\n");
                 } else {
-                    if (esc == 1) {consultar_saldo(usuarios[usuario_autenticado].nome, usuarios[usuario_autenticado].cpf);}
+                    if (esc == 1) {consultar_saldo(usuarios[usuario_autenticado].nome, usuarios[usuario_autenticado].cpf, criptos);}
 
                     else if (esc == 2) { consultar_extrato(num_strings, senha, usuarios[usuario_autenticado].nome, usuarios[usuario_autenticado].cpf); }
                     else if (esc == 3) { depositar(&real,&num_strings, &bit ,&eth ,&rip); salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings); }
                     else if (esc == 4) { sacar(senha, &real, &num_strings, &bit ,&eth ,&rip); salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings);}
                     else if (esc == 5) { comprar_cripto(senha,&num_strings,&real, criptos); salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings); }
-                    else if (esc == 6) { vender_cripto(senha, &num_strings,&real ,&bit ,&eth ,&rip ,&cot_bit, &cot_eth, &cot_rip); salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings); }
-                    else if (esc == 7) { atualizar_cot(&cot_bit, &cot_eth, &cot_rip); salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings); }
+                    else if (esc == 6) { vender_cripto(senha, &num_strings,&real , criptos); salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings); }
+                    else if (esc == 7) { atualizar_cot(criptos); salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings); }
                     else if (esc == 8) { salvar_arquivo(usuarios[usuario_autenticado].nome_arquivo,&bit,&eth,&rip,&real,&cot_bit,&cot_eth,&cot_rip,extrato, &num_strings); return 0;}
                 }
             }

@@ -70,7 +70,7 @@ int menu();
 
 int menu2();
 
-void consultar_saldo(char nome[], char cpf[]);
+void consultar_saldo(char nome[], char cpf[], cripto criptos[]);
 
 int consultar_extrato(int num_strings, int senha, char nome[], char cpf[]);
 
@@ -80,6 +80,6 @@ int sacar(int senha,float *real,int *num_strings, float *bit, float *eth, float 
 
 int comprar_cripto(int senha, int *num_strings, float *real, cripto criptos[]);
 
-int vender_cripto(int senha,int *num_strings, float *real ,float *bit, float *eth, float *rip, double *cot_bit, double *cot_eth, double *cot_rip);
+int vender_cripto(int senha,int *num_strings, float *real ,cripto criptos[]);
 
-int atualizar_cot(double *cot_bit, double *cot_eth, double *cot_rip);
+int atualizar_cot(cripto criptos[]);

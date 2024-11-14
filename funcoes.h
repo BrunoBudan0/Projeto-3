@@ -78,7 +78,7 @@ int depositar(float *real, int *num_strings, float *bit, float *eth, float *rip)
 
 int sacar(int senha,float *real,int *num_strings, float *bit, float *eth, float *rip);
 
-int comprar_cripto(int senha, int *num_strings, float *real, cripto *criptos[]);
+int comprar_cripto(int senha, int *num_strings, float *real, cripto criptos[]);
 
 int vender_cripto(int senha,int *num_strings, float *real ,float *bit, float *eth, float *rip, double *cot_bit, double *cot_eth, double *cot_rip);
 

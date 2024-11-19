@@ -34,7 +34,6 @@ int main(void) {
         }
         while (1) {
             menu_admin();
-            ler_moedas();
             printf("Escolha uma opcao: ");
             scanf("%d", &esc);
             printf("\n");

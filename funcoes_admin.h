@@ -34,7 +34,6 @@ typedef struct {
 } Criptomoeda;
 
 int salvar_moedas(const Criptomoeda *moeda);
-
 int ler_moedas();
 
 // arquivo moedas

@@ -29,18 +29,71 @@ int ler_moedas() {
 
     Criptomoeda moeda;
     while (fread(&moeda, sizeof(Criptomoeda), 1, arquivo) > 0) {
-        // printf("Nome: %s\n", moeda.nome);
-        // printf("Cotacao: %.2lf\n", moeda.cota);
-        // printf("Taxa de Compra: %.2f\n", moeda.taxa_c);
-        // printf("Taxa de Venda: %.2f\n", moeda.taxa_v);
-        // printf("\n");
+        printf("Nome: %s\n", moeda.nome);
+        printf("Cotacao: %.2lf\n", moeda.cota);
+        printf("Taxa de Compra: %.2f\n", moeda.taxa_c);
+        printf("Taxa de Venda: %.2f\n", moeda.taxa_v);
+        printf("\n");
     }
 
     fclose(arquivo);
     return 0;
 }
 
+int excluir_moeda(const char *nome_moeda) {
+    FILE *arquivo_original = fopen("moedas.dat", "rb");
+    FILE *arquivo_temp = fopen("moedas_temp.dat", "wb");
+    if (!arquivo_original || !arquivo_temp) {
+        perror("Erro ao abrir arquivo");
+        if (arquivo_original) fclose(arquivo_original);
+        if (arquivo_temp) fclose(arquivo_temp);
+        return 1;
+    }
 
+    Criptomoeda moeda;
+    int excluido = 0;
+    int encontrado = 0;
+
+    while (fread(&moeda, sizeof(Criptomoeda), 1, arquivo_original) > 0) {
+        if (strcmp(moeda.nome, nome_moeda) == 0) {
+            encontrado = 1;
+            // Mostrar as informações da moeda encontrada
+            printf("Nome: %s\n", moeda.nome);
+            printf("Cotacao: %.2lf\n", moeda.cota);
+            printf("Taxa de Compra: %.2f\n", moeda.taxa_c);
+            printf("Taxa de Venda: %.2f\n", moeda.taxa_v);
+
+            // Pedir confirmação do usuário
+            char confirmacao;
+            printf("Deseja realmente excluir esta moeda? (s/n): ");
+            scanf(" %c", &confirmacao); // Espaço antes do %c para ignorar qualquer espaço em branco
+
+            if (confirmacao == 's' || confirmacao == 'S') {
+                excluido = 1;
+                continue; // Não escrever esta moeda no arquivo temporário
+            } else {
+                printf("Exclusao da criptomoeda '%s' cancelada.\n", nome_moeda);
+            }
+        }
+        fwrite(&moeda, sizeof(Criptomoeda), 1, arquivo_temp); // Escrever as outras moedas no arquivo temporário
+    }
+
+    fclose(arquivo_original);
+    fclose(arquivo_temp);
+
+    if (excluido) {
+        remove("moedas.dat");
+        rename("moedas_temp.dat", "moedas.dat");
+        printf("Criptomoeda '%s' excluida com sucesso.\n", nome_moeda);
+    } else {
+        remove("moedas_temp.dat");
+        if (!encontrado) {
+            printf("Criptomoeda '%s' não encontrada.\n", nome_moeda);
+        }
+    }
+
+    return 0;
+}
 
 // arquivo moedas
 
@@ -105,23 +158,19 @@ int cadastrar_cripto() {
 }
 
 
-
 int exc_cripto() {
     printf("\nExcluir Cripto:\n");
-    // char moeda_exc[255];
-    // Criptomoeda moeda;
-    // printf("Digite o nome da moeda que deseja excluir:");
-    // scanf("%s", moeda_exc);
-    
-    // while (strcmp(moeda_exc) == moeda.nome){
-    //     printf("Nome: %s\n", moeda.nome);
-    //     printf("Cotacao: %.2lf\n", moeda.cota);
-    //     printf("Taxa de Compra: %.2f\n", moeda.taxa_c);
-    //     printf("Taxa de Venda: %.2f\n", moeda.taxa_v);
-    //     printf("\n");
-    // }
 
-    // return 0;
+    char nome_moeda[255];
+    printf("Digite o nome da moeda que deseja excluir: ");
+    scanf("%s", nome_moeda);
+
+    excluir_moeda(nome_moeda);
+
+    ler_moedas(); // Ler e imprimir todas as moedas para verificar
+    system("pause");
+
+    return 0;
 }
 
 int atualizar_cota() {

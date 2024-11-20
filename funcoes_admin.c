@@ -5,7 +5,6 @@
 #include <time.h>
 #include "funcoes_admin.h" 
 
-// arquivo moedas
 
 int salvar_moedas(const Criptomoeda *moeda) {
     FILE *arquivo = fopen("moedas.dat", "ab"); 
@@ -14,14 +13,14 @@ int salvar_moedas(const Criptomoeda *moeda) {
         return 1;
     }
 
-    fwrite(moeda, sizeof(Criptomoeda), 1, arquivo); // Escreve a estrutura completa
+    fwrite(moeda, sizeof(Criptomoeda), 1, arquivo); 
 
     fclose(arquivo);
     return 0;
 }
 
 int ler_moedas() {
-    FILE *arquivo = fopen("moedas.dat", "rb"); // Arquivo binário, modo leitura
+    FILE *arquivo = fopen("moedas.dat", "rb"); 
     if (!arquivo) {
         perror("Erro ao abrir arquivo");
         return 1;
@@ -57,25 +56,23 @@ int excluir_moeda(const char *nome_moeda) {
     while (fread(&moeda, sizeof(Criptomoeda), 1, arquivo_original) > 0) {
         if (strcmp(moeda.nome, nome_moeda) == 0) {
             encontrado = 1;
-            // Mostrar as informações da moeda encontrada
             printf("Nome: %s\n", moeda.nome);
             printf("Cotacao: %.2lf\n", moeda.cota);
             printf("Taxa de Compra: %.2f\n", moeda.taxa_c);
             printf("Taxa de Venda: %.2f\n", moeda.taxa_v);
 
-            // Pedir confirmação do usuário
             char confirmacao;
             printf("Deseja realmente excluir esta moeda? (s/n): ");
-            scanf(" %c", &confirmacao); // Espaço antes do %c para ignorar qualquer espaço em branco
+            scanf(" %c", &confirmacao);
 
             if (confirmacao == 's' || confirmacao == 'S') {
                 excluido = 1;
-                continue; // Não escrever esta moeda no arquivo temporário
+                continue;
             } else {
                 printf("Exclusao da criptomoeda '%s' cancelada.\n", nome_moeda);
             }
         }
-        fwrite(&moeda, sizeof(Criptomoeda), 1, arquivo_temp); // Escrever as outras moedas no arquivo temporário
+        fwrite(&moeda, sizeof(Criptomoeda), 1, arquivo_temp);
     }
 
     fclose(arquivo_original);
@@ -95,7 +92,7 @@ int excluir_moeda(const char *nome_moeda) {
     return 0;
 }
 
-// arquivo moedas
+
 
 void criarAdmin(Adm adms[]){
     strcpy(adms[0].cpf, "12345678901");
@@ -143,8 +140,8 @@ void cadastrar_investidor(const char *arquivo_investidores) {
     printf("Senha: ");
     scanf("%s", novo.senha);
 
-    novo.num_criptos = 0; // Inicia sem nenhuma criptomoeda
-    novo.saldo = 0.0; // Saldo inicial em reais
+    novo.num_criptos = 0; 
+    novo.saldo = 0.0; 
 
     if (fwrite(&novo, sizeof(Investidor), 1, arquivo) != 1) {
         perror("Erro ao escrever no arquivo");
@@ -162,7 +159,7 @@ void excluir_investidor(const char *arquivo_investidores) {
     scanf("%s", cpf);
 
     FILE *arquivo = fopen(arquivo_investidores, "rb");
-    FILE *temp = fopen("temp.bin", "wb"); // Arquivo temporário
+    FILE *temp = fopen("temp.bin", "wb"); 
     if (!arquivo || !temp) {
         printf("Erro ao abrir os arquivos!\n");
         return;
@@ -171,7 +168,6 @@ void excluir_investidor(const char *arquivo_investidores) {
     Investidor investidor;
     bool encontrado = false;
 
-    // Lê todos os registros e copia os que não correspondem ao CPF
     while (fread(&investidor, sizeof(Investidor), 1, arquivo)) {
         if (strcmp(investidor.cpf, cpf) != 0) {
             fwrite(&investidor, sizeof(Investidor), 1, temp);
@@ -183,8 +179,8 @@ void excluir_investidor(const char *arquivo_investidores) {
     fclose(arquivo);
     fclose(temp);
 
-    remove(arquivo_investidores); // Remove o arquivo original
-    rename("temp.bin", arquivo_investidores); // Renomeia o temporário
+    remove(arquivo_investidores); 
+    rename("temp.bin", arquivo_investidores); 
 
     if (encontrado) {
         printf("Investidor excluído com sucesso!\n");
@@ -215,7 +211,7 @@ int cadastrar_cripto() {
     return 0;
 }
 
-/// Funções do investidor
+
 
 void listar_investidores(const char *arquivo_investidores) {
     FILE *arquivo = fopen(arquivo_investidores, "rb");
@@ -336,11 +332,8 @@ int carregarUsuarios(const char *arquivo_investidores, Usuario usuarios[]) {
     }
 
     fclose(arquivo);
-    return count; // Retorna o número de usuários carregados
+    return count; 
 }
-
-/// Funções do investidor
-
 
 int exc_cripto() {
     printf("\nExcluir Cripto:\n");
@@ -351,14 +344,45 @@ int exc_cripto() {
 
     excluir_moeda(nome_moeda);
 
-    ler_moedas(); // Ler e imprimir todas as moedas para verificar
+    ler_moedas();
     system("pause");
 
     return 0;
 }
 
 int atualizar_cota() {
-    printf("atualizar cotacao\n");
-    ler_moedas();
+    printf("Atualizando cotações das criptomoedas\n");
+
+    FILE *arquivo = fopen("moedas.dat", "rb");
+    FILE *arquivo_temp = fopen("moedas_temp.dat", "wb");
+
+    if (!arquivo || !arquivo_temp) {
+        perror("Erro ao abrir o arquivo");
+        if (arquivo) fclose(arquivo);
+        if (arquivo_temp) fclose(arquivo_temp);
+        return 1;
+    }
+
+    Criptomoeda moeda;
+    srand(time(NULL)); 
+
+    while (fread(&moeda, sizeof(Criptomoeda), 1, arquivo) > 0) {
+        double fator_aleatorio = 0.5 + ((rand() / (double)RAND_MAX) * 1.0);
+        moeda.cota *= fator_aleatorio;
+
+        printf("Nome: %s\n", moeda.nome);
+        printf("Nova Cotação: %.2lf\n", moeda.cota);
+
+        fwrite(&moeda, sizeof(Criptomoeda), 1, arquivo_temp);
+    }
+
+    fclose(arquivo);
+    fclose(arquivo_temp);
+
+    remove("moedas.dat"); 
+    rename("moedas_temp.dat", "moedas.dat"); 
+
+    printf("Cotações atualizadas com sucesso!\n");
+
     return 0;
 }

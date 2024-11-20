@@ -13,7 +13,7 @@ typedef struct {
     struct {
         char nome[20];    // Nome da criptomoeda
         float quantidade; // Quantidade possuída
-    } criptos[10]; // Suporte a até 10 tipos de criptomoedas
+    } criptos[10];
 } Investidor;
 
 
@@ -57,7 +57,6 @@ int atualizar_cota();
 
 
 // arquivo moedas
-
 
 typedef struct {
     char nome[255];

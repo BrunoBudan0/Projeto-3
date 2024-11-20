@@ -13,7 +13,6 @@ int main(void) {
     Adm adms[3];
     criarAdmin(adms);
     
-   // Nome do arquivo único para investidores
     const char *arquivo_investidores = "investidores.bin";
 
     printf("Seja bem vindo! Insira seu CPF e sua senha para realizar o login.\n");
@@ -27,8 +26,7 @@ int main(void) {
 
         int adm_autenticado = -1;
 
-        // Verifica login nos 3 administradores cadastrados
-        for (int i = 0; i < 3; i++) {  // Corrigido de 10 para 3
+        for (int i = 0; i < 3; i++) { 
             if (strcmp(adms[i].cpf, cpf) == 0 && adms[i].senha == senha) {
                 adm_autenticado = i;
                 break;
@@ -39,7 +37,7 @@ int main(void) {
             printf("Acesso permitido!\n");
 
             while (1) {
-                menu1_admin();  // Corrigido para o nome correto
+                menu1_admin();  
                 printf("Escolha uma opcao: ");
                 scanf("%d", &esc);
                 printf("\n");
@@ -60,7 +58,7 @@ int main(void) {
                     } else if (esc == 6) { 
                         consultar_extrato(arquivo_investidores); 
                     } else if (esc == 7) { 
-                        printf("Atualizar Cotacao\n");
+                        atualizar_cota();
                     } else if (esc == 8) { 
                         printf("Encerrando...\n");
                         return 0; 

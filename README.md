@@ -1,15 +1,95 @@
-Em nosso projeto nos fizemos um Exchange de Criptomoedas, isto é, um menu onde se pode interagir com as criptomoedas, mas de forma imaginária, usamos o Bitcoin, o Ethereum e o Ripple de referência. 
-Nele nós adicionamos diversas caracteristícas, como consultar seu saldo atual de cada criptomoeda e em R$ (reais), a compra e a venda de cripto, o deposito e o saque de R$, e podendo atualizar a cotação também por exemplo.
+README - Sistema de Administração de Criptomoedas em C 🚀
 
-O programa funciona com 3 arquivos principais: main.c , funcoes.c e funcoes.h ; Esses arquivos são os que contém todo o código em c e suas bases para funcionamento, porém é necessário ter ao menos um dos arquivos binários de armazenamento de dados do usuário para funcionamento completo do programa, já que é neles que se localizam os valores das variáveis do programa (cada arquivo binário é completo, contendo informações do saldo, extrato e cotação), mas ficara limitado ao usuário do arquivo baixado(para a experiencia completa baixe todos os arquivos).
+Descrição
 
-Os usuários e suas senhas seguem um padrão, os primeiros 10 dígitos são a sequência da base decimal a partir do 1, ou seja: 123.456.789-0 (não é necessário a utilização de pontos [.] e sinais [-] na hora de preencher os campos do programa); o último digito vai de 0 a 9, sendo esse digito utilizado na senha três vezes (Ex: senha: 222); os usuários do programa seguem esses padrões. (Ex: cpf: 12345678902 senha:222)
+  Um sistema desenvolvido em C que permite gerenciar criptomoedas e investidores com diversas funcionalidades, incluindo cadastro, exclusão, consulta de dados e atualização de cotações de forma aleatória. O sistema conta com autenticação de administradores para acesso ao painel.
 
-Para colocar nosso código para funcionar é simples, e pode ser feito pelos seguintes passos:
-1. Com o código aberto e todos os arquivos na mesma pasta, crie um terminal.
-2. No terminal digite o seguinte comando, "gcc main.c funcoes.c -o Programa" (A palavra programa pode ser subistituida pela palavra de sua preferência), para este passo você precisa ter o gcc baixado em seu computador, caso não tenha veja no YouTube como instalar, é rápido e gratuito.
-3. Por fim, digite o seguinte comando: "./Programa" (Ou a palavra que tenha escolhido no Passo 2). 
+⚙️ Funcionalidades Principais
 
-Bruno Budano Mello RA: 22.124.006-2
-Gabriel Andrade Rosa Oliveira RA: 22.124.075-7
-Daniel Borrachina Clemente RA: 22.124.078-1
+  Autenticação:
+    Login de administradores usando CPF e senha.
+    Controle de acesso seguro ao sistema administrativo.
+  
+  Gestão de Criptomoedas:  
+    Cadastrar Criptomoeda: Permite adicionar novas criptomoedas com cotação e taxas.
+    Excluir Criptomoeda: Remove uma criptomoeda após confirmação.
+    Atualizar Cotação: Atualiza as cotações de todas as criptomoedas com um fator aleatório.
+  
+  Gestão de Investidores:  
+    Cadastrar Investidor: Adiciona novos investidores ao sistema.
+    Consultar Saldo: Exibe o saldo atual e as criptomoedas do investidor.
+    Consultar Extrato: Mostra os detalhes das transações de um investidor.
+    Excluir Investidor: Remove investidores usando seu CPF.
+    Listar Investidores: Lista todos os investidores registrados.
+
+🛠️ Estrutura do Código
+
+  main_admin.c: Contém a função main e gerencia a lógica de autenticação e menu principal.
+  funcoes_admin.c: Implementa funções auxiliares para gerenciamento de criptomoedas e investidores.
+  funcoes_admin.h: Declara as funções utilizadas no sistema.
+  Arquivos de Dados:
+    investidores.bin: Armazena informações dos investidores.
+    moedas.dat: Armazena informações das criptomoedas.
+
+💻 Requisitos para Compilação
+
+  Sistema Operacional: Windows ou compatível.
+  Compilador: GCC ou MinGW para C.
+  Bibliotecas: stdio.h, string.h, stdbool.h, stdlib.h, time.h.
+
+⚙️ Como Compilar e Executar
+
+  Instale o MinGW (caso ainda não tenha): Guia de instalação do MinGW
+    Clone o Repositório:
+      git clone https://github.com/seu_usuario/seu_repositorio.git
+      cd seu_repositorio
+  Compile o Projeto:
+    gcc -o main_admin main_admin.c funcoes_admin.c -Wall
+  Execute o Programa:
+    No Windows:
+      main_admin.exe
+    No Linux/MacOS:
+      ./main_admin
+      
+📋 Menu Principal
+
+  Cadastrar Novo Investidor
+  Excluir Investidor
+  Cadastrar Criptomoeda
+  Excluir Criptomoeda
+  Consultar Saldo de Investidor
+  Consultar Extrato de Investidor
+  Atualizar Cotação
+  Sair
+  Listar Investidores
+  
+🔒 Autenticação
+
+  Administradores Cadastrados:
+    Gabriel (CPF: 12345678901, Senha: 111)
+    Bruno (CPF: 12345678902, Senha: 222)
+    Daniel (CPF: 12345678903, Senha: 333)
+📦 Estrutura do Projeto
+
+  /seu_repositorio
+  ├── main_admin.c          # Arquivo principal com a função main e controle do menu
+  ├── funcoes_admin.c       # Funções auxiliares para gerenciamento
+  ├── funcoes_admin.h       # Declarações das funções
+  ├── investidores.bin      # Dados dos investidores
+  └── moedas.dat            # Dados das criptomoedas
+  
+🛡️ Regras e Considerações
+  Autenticação: Apenas administradores registrados podem acessar o painel.
+  Cadastro de Investidores: Um investidor é registrado com saldo inicial de 0 e sem criptomoedas.
+  Exclusão com Confirmação: Para excluir criptomoedas e investidores, é necessário confirmar a ação.
+  Atualização de Cotações: Os valores das cotações são multiplicados por fatores aleatórios para simular variações de mercado.
+  
+🐞 Possíveis Melhorias Futuras
+Adicionar persistência de sessões para evitar múltiplos logins.
+Implementar gráficos para melhor visualização de dados financeiros.
+Adicionar suporte para relatórios detalhados de investidores e criptomoedas.
+
+Feito com ❤️ por 
+  Bruno Budano Mello RA: 22.124.006-2 
+  Daniel Borrachina Clemente RA: 22.124.078-1 
+  Gabriel Andrade Rosa Oliveira RA: 22.124.075-7 .
